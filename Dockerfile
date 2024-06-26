@@ -13,7 +13,7 @@ RUN pip install -r requirements.txt
 COPY app /app
 
 # Expose the port that the app runs on
-EXPOSE 8000
+EXPOSE $PORT
 
 # Command to run the app with uvicorn
-CMD ["sh", "-c", "cd /app && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"]
+CMD ["sh", "-c", "cd /app && uvicorn main:app --host 0.0.0.0 --port $PORT --reload"]
