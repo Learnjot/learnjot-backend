@@ -10,7 +10,6 @@ pydantic = "*"
 motor = "*"
 fastapi-mail = "*"
 python-dotenv = "*"
-passlib = "*"
 pydantic-settings = "*"
 pymongo = "*"
 jose = "*"
@@ -18,6 +17,8 @@ python-jose = "*"
 bcrypt = "*"
 bson = "*"
 apscheduler = "*"
+email-validator = "*"
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [dev-packages]
 

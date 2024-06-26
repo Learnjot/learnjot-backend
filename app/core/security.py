@@ -1,6 +1,6 @@
 from passlib.context import CryptContext
 from jose import jwt, JWTError
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 from pydantic import BaseModel, EmailStr
 from core.config import settings
@@ -20,9 +20,9 @@ def verify_password(plain_password, hashed_password):
 def create_access_token(data:dict, expires_delta: Optional[timedelta] = None):
     encoded = data.copy()
     if expires_delta:
-        expire = datetime.utcnow() +expires_delta
+        expire = datetime.now(tz=timezone.utc) +expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.now(tz=timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     encoded.update({"exp": expire})
     encoded_jwt = jwt.encode(encoded, settings.SECRET_KEY)
     return encoded_jwt
@@ -31,9 +31,9 @@ def create_access_token(data:dict, expires_delta: Optional[timedelta] = None):
 def create_refresh_token(data: dict, expires_delta: Optional[timedelta] = None):
     encoded = data.copy()
     if expires_delta:
-        expire = datetime.utcnow() +expires_delta
+        expire = datetime.now(tz=timezone.utc) +expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.now(tz=timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     encoded.update({"exp": expire})
     encoded_jwt = jwt.encode(encoded, settings.SECRET_KEY)
     return encoded_jwt
@@ -49,7 +49,7 @@ def decode_token(token:str):
         return None
     
 def create_reset_password_token(email: str):
-    expire = datetime.utcnow() + timedelta(hours=1)  # Token valid for 1 hour
+    expire = datetime.now(tz=timezone.utc) + timedelta(hours=1)  # Token valid for 1 hour
     to_encode = {"sub": email, "exp": expire}
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
