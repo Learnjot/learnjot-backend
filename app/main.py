@@ -23,3 +23,8 @@ def redirect_to_docs():
     return RedirectResponse(url="/docs")
 
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["Authentication"])
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
